@@ -1,0 +1,20 @@
+{
+  "name": "suricats-api-dialogflow-interface",
+  "version": "1.0.0",
+  "description": "Dialogflow interface in order to consume suricats-api",
+  "main": "./src/server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "loic.sikidi@suricats-consulting.com",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-validator": "^5.0.3",
+    "morgan": "^1.9.0",
+    "superagent": "^3.8.2"
+  }
+}
