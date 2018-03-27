@@ -5,7 +5,9 @@ const INTENTS = require('../intents');
 //const validate = require('./validation');
 const noMemoryIntents = [
   'get_phone',
-  'get_birthday'
+  'get_birthday',
+  'get_mission',
+  'get_numbers_of_people'
 ];
 
 router.post('/',
@@ -26,7 +28,7 @@ router.post('/',
   .then((reply) => {
     u.formatResponse(res, intent, entities, u.random(fulfillments), reply)
   })
-  .catch((error) => console.log('ERROR', error));
+  .catch((error) => console.error('ERROR', error));
 });
 
 module.exports = router;

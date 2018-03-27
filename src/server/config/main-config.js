@@ -10,7 +10,7 @@
   const expressValidator = require('express-validator');
 
   // *** load environment variables *** //
-  require('dotenv').config();
+  //require('dotenv').config();
 
   appConfig.init = function(app, express) {
 
