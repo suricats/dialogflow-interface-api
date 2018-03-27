@@ -1,0 +1,50 @@
+---
+- hosts: all
+  vars_files:
+    - vars.yml
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt: update_cache=yes cache_valid_time=3600
+      become: yes
+  tasks:
+  - name: Disable the firewall (since this is for local dev only).
+    service: name=ufw state=stopped
+    become: yes
+  - name: Install all dependences on host(s).
+    apt: name={{ item }} state=present
+    with_items:
+      - npm
+      - nodejs-legacy
+    become: yes
+  - name: Install forever package.
+    npm: name={{ item }} state=present global=yes
+    with_items:
+      - forever
+      - n
+    become: yes
+  - name: Check nodejs version.
+    command: "node --version"
+    register: node_version
+    changed_when: false
+  - name: Upgrade NODE version if the current version does not contains '9.0'.
+    command: n 9.0.0
+    become: yes
+    when: "'v9' not in node_version.stdout"
+  - name: Ensure Node.js app folder exists.
+    file: path={{ node_application_location }} state=directory
+  - name: Install app dependencies defined in package.json.
+    npm: path={{ node_application_location }}
+  - name: Check list of running Node.js apps.
+    command: forever list
+    register: forever_list
+    changed_when: false
+  - name: Start example Node.js app.
+    command: forever start -o /home/vagrant/out.log -e /home/vagrant/err.log servers.js
+    environment:
+      NODE_ENV: "{{ node_env }}"
+      PORT: "{{ node_application_port }}"
+      SURICAT_API_TOKEN: "{{ suricat_api_token }}"
+      SURICAT_API_URI: "{{ suricat_api_uri }}"
+    args:
+      chdir: "{{ node_application_location }}"
+    when: "forever_list.stdout.find(node_application_location + '/servers.js') == -1"

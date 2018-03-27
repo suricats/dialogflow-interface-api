@@ -1,0 +1,9 @@
+---
+
+node_env: "development"
+node_core_version: "9.0.0"
+node_application_port: 8090
+node_application_location: "/srv/server/src/server"
+
+suricat_api_uri: TODO
+suricat_api_token: TODO
