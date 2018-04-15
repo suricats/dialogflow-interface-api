@@ -4,9 +4,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
   config.vm.synced_folder ".", "/srv/server"
-  config.ssh.insert_key = false
+  config.ssh.insert_key = true
 
   config.vm.provider :virtualbox do |v|
      v.name = "dialogflowapp"
@@ -19,6 +19,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      app.vm.network :private_network, ip: "192.168.60.6"
      app.vm.network "forwarded_port", guest: 8090, host: 8090
   end
+
+  # # First, install python
+  # config.vm.provision "shell" do |s|
+  #   s.inline = "apt -y update && apt install -y python-minimal"
+  # end
 
   # Ansible provisioner.
   config.vm.provision "ansible" do |ansible|

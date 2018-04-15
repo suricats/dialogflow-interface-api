@@ -1,11 +1,15 @@
 ---
 - hosts: all
+  gather_facts: false
   vars_files:
     - vars.yml
   pre_tasks:
-    - name: Update apt cache if needed.
-      apt: update_cache=yes cache_valid_time=3600
+    - name: Install python 2
       become: yes
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    - name: Update apt cache if needed.
+      become: yes
+      apt: update_cache=yes cache_valid_time=3600
   tasks:
   - name: Disable the firewall (since this is for local dev only).
     service: name=ufw state=stopped
